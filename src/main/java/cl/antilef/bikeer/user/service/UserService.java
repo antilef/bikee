@@ -1,5 +1,6 @@
-package cl.antilef.bikeer.user;
+package cl.antilef.bikeer.user.service;
 
+import cl.antilef.bikeer.user.CreateUserDTO;
 import cl.antilef.bikeer.user.entity.User;
 import cl.antilef.bikeer.user.repository.MongoUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

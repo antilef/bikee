@@ -2,6 +2,7 @@ package cl.antilef.bikeer.user;
 
 import cl.antilef.bikeer.user.entity.User;
 import cl.antilef.bikeer.user.repository.MongoUserRepository;
+import cl.antilef.bikeer.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
