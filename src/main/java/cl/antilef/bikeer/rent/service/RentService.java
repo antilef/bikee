@@ -5,14 +5,11 @@ import cl.antilef.bikeer.bike.repository.BikeRepository;
 import cl.antilef.bikeer.rent.dto.CreateRentRequestDTO;
 import cl.antilef.bikeer.rent.entity.Rent;
 import cl.antilef.bikeer.rent.repository.RentRepository;
-import cl.antilef.bikeer.user.entity.User;
-import cl.antilef.bikeer.user.exceptions.UserNotFoundException;
-import cl.antilef.bikeer.user.repository.MongoUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RentService {
@@ -51,6 +48,9 @@ public class RentService {
 
         for (Bike bike:bikes){
             List<String> rents = bike.getRents();
+            if(rents == null){
+                rents = new ArrayList<>();
+            }
             rents.add(rent.getId());
             bike.setRents(rents);
             bikeRepository.save(bike);

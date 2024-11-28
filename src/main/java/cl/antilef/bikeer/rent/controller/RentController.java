@@ -7,11 +7,11 @@ import cl.antilef.bikeer.rent.dto.CreateRentResponseDTO;
 import cl.antilef.bikeer.rent.entity.Rent;
 import cl.antilef.bikeer.rent.service.RentService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("api/v1/rents")
+
+@RestController
+@RequestMapping("/api/v1/rents")
 public class RentController {
 
 
