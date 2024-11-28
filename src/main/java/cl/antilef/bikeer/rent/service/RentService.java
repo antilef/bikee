@@ -46,7 +46,7 @@ public class RentService {
                 .build();
 
 
-        for (Bike bike:bikes){
+        for (Bike bike: bikes){
             List<String> rents = bike.getRents();
             if(rents == null){
                 rents = new ArrayList<>();
