@@ -1,27 +1,36 @@
 package cl.antilef.bikeer.rent.entity;
 
 
-import cl.antilef.bikeer.bike.entity.Bike;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+@Data
+@AllArgsConstructor
+@Builder
 
 public class Rent {
 
     @Id
     private String id;
 
-    LocalDateTime startDate;
+    private String userId;
 
-    LocalDateTime endDate;
+    private LocalDateTime startDate;
+
+    private LocalDateTime endDate;
 
     boolean activate;
 
-    String price;
+    private String price;
 
-    Payment payment;
+    private Payment payment;
 
-    List<String> bikes;
+    private List<String> bikes;
 
 }
