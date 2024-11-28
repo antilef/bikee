@@ -1,27 +1,28 @@
 package cl.antilef.bikeer.user.entity;
 
-import jakarta.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Setter
 @Getter
-public class User {
+public class User implements UserDetails {
 
     @Id
     public String id;
 
     private String firstName;
 
-    @NotNull(message = "The email is required")
-    @Field("yourField")
     private String email;
+
     private String lastName;
 
-    @NotNull(message = "The password is required")
-    @Field("yourField")
     private String password;
     private String phone;
 
@@ -37,6 +38,15 @@ public class User {
         this.lastName = lastName;
         this.phone = phone;
     }
+
+    public User(String firstName, String lastName, String email, String phone, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
+
     public static User withId(String id,String firstName,String lastName,String phone){
         return new User(id,firstName,lastName,phone);
     }
@@ -46,5 +56,15 @@ public class User {
         return String.format(
                 "User[id=%s, firstName='%s', lastName='%s',email='%s']",
                 id, firstName, lastName,email);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 }
