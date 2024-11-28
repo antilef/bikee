@@ -8,5 +8,4 @@ import java.util.List;
 public interface MongoUserRepository extends MongoRepository<User,String> {
     User findByFirstName(String firstName);
     List<User> findByLastName(String lastName);
-    User updateOne(String id,String firstname,String lastname,String phone);
 }
