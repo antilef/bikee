@@ -3,7 +3,7 @@ version: 2.1
 executors:
   java-executor:
     docker:
-      - image: openjdk:21-jdk  # Specify the Docker image with Java 21
+      - image: cimg/openjdk:21.0 # Specify the Docker image with Java 21
     working_directory: /workspace
 
 jobs:
