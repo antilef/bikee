@@ -11,12 +11,37 @@ jobs:
     executor: java-executor
     steps:
       - checkout  # Checkout the code
+
+      # Cache Gradle dependencies to speed up future builds
+      - restore_cache:
+          keys:
+            - gradle-deps-{{ checksum "build.gradle" }}-{{ checksum "settings.gradle" }}
+            - gradle-deps-{{ checksum "build.gradle" }}
+            - gradle-deps-
+
+      # Install dependencies and tools (including xargs)
       - run:
-          name: Install Dependencies
-          command: ./gradlew build
+          name: Install Dependencies and Tools
+          command: |
+            apt-get update && apt-get install -y findutils  # Install xargs and other utilities
+            ./gradlew --no-daemon dependencies  # Install project dependencies
+
+      # Build the project
+      - run:
+          name: Build Project
+          command: ./gradlew build --no-daemon
+
+      # Run Tests
       - run:
           name: Run Tests
-          command: ./gradlew test  # Run your tests
+          command: ./gradlew test --no-daemon
+
+      # Save the cache of Gradle dependencies
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+            - ~/.gradle/wrapper
+          key: gradle-deps-{{ checksum "build.gradle" }}-{{ checksum "settings.gradle" }}
 
 workflows:
   version: 2
