@@ -3,6 +3,7 @@ package cl.antilef.bikeer.auth.controller;
 import cl.antilef.bikeer.auth.dto.*;
 import cl.antilef.bikeer.auth.service.AuthService;
 import cl.antilef.bikeer.auth.service.JwtService;
+import cl.antilef.bikeer.common.StatusResult;
 import cl.antilef.bikeer.user.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,11 +27,17 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<SignUpResponseDTO> register(@RequestBody SignUpRequestDTO registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
-        SignUpResponseDTO response = new SignUpResponseDTO("User Created",registeredUser.getEmail(),"OK");
+        try{
+            User registeredUser = authenticationService.signup(registerUserDto);
+            SignUpResponseDTO response = new SignUpResponseDTO("User Created",registeredUser.getEmail(),StatusResult.OK.toString());
 
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            SignUpResponseDTO response = new SignUpResponseDTO(e.getMessage(),null, StatusResult.NOK.toString());
+            return ResponseEntity.badRequest().body(response);
+        }
+
     }
 
     @PostMapping("/login")
