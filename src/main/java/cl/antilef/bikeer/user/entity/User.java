@@ -1,8 +1,10 @@
 package cl.antilef.bikeer.user.entity;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Setter
 @Getter
@@ -12,7 +14,14 @@ public class User {
     public String id;
 
     private String firstName;
+
+    @NotNull(message = "The email is required")
+    @Field("yourField")
+    private String email;
     private String lastName;
+
+    @NotNull(message = "The password is required")
+    @Field("yourField")
     private String password;
     private String phone;
 
@@ -35,7 +44,7 @@ public class User {
     @Override
     public String toString() {
         return String.format(
-                "User[id=%s, firstName='%s', lastName='%s']",
-                id, firstName, lastName);
+                "User[id=%s, firstName='%s', lastName='%s',email='%s']",
+                id, firstName, lastName,email);
     }
 }
