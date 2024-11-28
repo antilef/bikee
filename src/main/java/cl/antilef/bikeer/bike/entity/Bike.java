@@ -1,10 +1,17 @@
 package cl.antilef.bikeer.bike.entity;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
+
+@Data
+@AllArgsConstructor
+@Builder
 public class Bike {
 
     @Id
