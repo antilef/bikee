@@ -2,6 +2,7 @@ package cl.antilef.bikeer.user.entity;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
