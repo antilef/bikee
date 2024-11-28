@@ -1,13 +1,19 @@
 package cl.antilef.bikeer.user;
 
+import cl.antilef.bikeer.user.dto.CreateUserDTO;
+import cl.antilef.bikeer.user.dto.UpdateUserDTO;
 import cl.antilef.bikeer.user.entity.User;
+import cl.antilef.bikeer.user.exceptions.UserNotFoundException;
 import cl.antilef.bikeer.user.repository.MongoUserRepository;
 import cl.antilef.bikeer.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
@@ -22,7 +28,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void createUser(){
+    void createUserTest(){
 
         User mockUser = new User("Francisco", "Antilef", "345346436");
         when(userRepository.save(Mockito.any(User.class))).thenReturn(mockUser);
@@ -31,5 +37,34 @@ public class UserServiceTest {
         User result = us.createUser(cudto);
 
         assertEquals("Francisco", result.getFirstName());
+    }
+    @Test
+    void updateNotFoundUserTest() {
+
+        when(userRepository.findById(Mockito.any(String.class))).thenReturn(Optional.empty());
+
+        UpdateUserDTO uudto = new UpdateUserDTO("23489023904","Francisco","Antilef","452143244");
+
+
+        Exception exception = assertThrows(UserNotFoundException.class,()-> us.editUser(uudto));
+
+        assertEquals("User not found, cannot update",exception.getMessage());
+    }
+
+    @Test
+    void updateUserTest() throws UserNotFoundException {
+
+        User mockUser = User.withId("23489023904", "Francisco", "Antilef", "345346436");
+        when(userRepository.findById(Mockito.any(String.class))).thenReturn(Optional.of(mockUser));
+
+        when(userRepository.save(Mockito.any(User.class))).thenReturn(mockUser);
+
+
+        UpdateUserDTO uudto = new UpdateUserDTO("23489023904","Franco","Antilef","452143244");
+
+        User result = us.editUser(uudto);
+
+        assertEquals("Franco",result.getFirstName());
+
     }
 }

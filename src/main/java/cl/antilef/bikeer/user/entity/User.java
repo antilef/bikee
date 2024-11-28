@@ -23,6 +23,14 @@ public class User {
         this.lastName = lastName;
         this.phone = phone;
     }
+    private User(String id,String firstName, String lastName,String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+    }
+    public static User withId(String id,String firstName,String lastName,String phone){
+        return new User(id,firstName,lastName,phone);
+    }
 
     @Override
     public String toString() {
