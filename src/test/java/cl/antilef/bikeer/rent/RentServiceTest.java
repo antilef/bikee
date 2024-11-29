@@ -7,6 +7,7 @@ import cl.antilef.bikeer.bike.repository.BikeRepository;
 import cl.antilef.bikeer.mocks.InMemoryBikeRepo;
 import cl.antilef.bikeer.mocks.InMemoryRentRepo;
 import cl.antilef.bikeer.rent.dto.CreateRentRequestDTO;
+import cl.antilef.bikeer.rent.dto.CreateRentResponseDTO;
 import cl.antilef.bikeer.rent.entity.Rent;
 import cl.antilef.bikeer.rent.repository.RentRepository;
 import cl.antilef.bikeer.rent.service.RentService;
@@ -82,6 +83,69 @@ public class RentServiceTest {
 
         Assertions.assertEquals("No bikes founded",result.getMessage());
 
+
+    }
+
+    @Test
+    void createRentAndCheckBikesStatus() throws Exception {
+
+
+        bikeRepository =  new InMemoryBikeRepo(createValidBikeInitialStatus());
+        rentRepository = new InMemoryRentRepo(new CopyOnWriteArrayList<>());
+        rentService = new RentService(rentRepository,bikeRepository);
+
+
+        CreateRentRequestDTO request = new CreateRentRequestDTO("1",tomorrow,"10",
+                List.of("1"));
+
+
+
+        CreateRentResponseDTO result = rentService.create(request);
+
+        List<Bike> bikes = result.getBikes();
+
+        Assertions.assertEquals(bikes.getFirst().getRents().getFirst(),result.getRent().getId());
+        Assertions.assertEquals("10",result.getRent().getPrice());
+
+
+    }
+
+    @Test
+    void createRentWithMoreOneBike() throws Exception {
+
+
+        bikeRepository =  new InMemoryBikeRepo(createValidBikeInitialStatus());
+        rentRepository = new InMemoryRentRepo(new CopyOnWriteArrayList<>());
+        rentService = new RentService(rentRepository,bikeRepository);
+
+
+        List<String> idBikeAtStart = List.of(
+                "1","2"
+        );
+
+
+        CreateRentRequestDTO request = new CreateRentRequestDTO("1",tomorrow,"10",
+                idBikeAtStart);
+
+
+
+        CreateRentResponseDTO result = rentService.create(request);
+
+        List<Bike> bikes = result.getBikes();
+        Rent rent = result.getRent();
+
+        Assertions.assertEquals(2,bikes.size());
+
+
+        String firstBikeRentId = bikes.get(0).getRents().getFirst();
+        String secondBikeRentId = bikes.get(1).getRents().getFirst();
+
+
+        Assertions.assertEquals(firstBikeRentId,secondBikeRentId);
+        Assertions.assertEquals(rent.getId(),firstBikeRentId);
+
+        Assertions.assertEquals(2,rent.getBikes().size());
+        Assertions.assertEquals(idBikeAtStart,rent.getBikes());
 
     }
 

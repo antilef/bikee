@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.FluentQuery;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
@@ -74,6 +75,7 @@ public class InMemoryRentRepo implements RentRepository {
 
     @Override
     public <S extends Rent> S save(S entity) {
+        entity.setId(UUID.randomUUID().toString());
         this.rents.add(entity);
         return entity;
     }

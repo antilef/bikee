@@ -23,7 +23,7 @@ public class InMemoryBikeRepo implements BikeRepository {
 
     @Override
     public List<Bike> findAllIn(List<String> ids) {
-        return this.bikes;
+        return this.bikes.stream().filter(elem -> ids.contains(elem.getId()) ).toList();
     }
 
     @Override
@@ -73,7 +73,19 @@ public class InMemoryBikeRepo implements BikeRepository {
 
     @Override
     public <S extends Bike> S save(S entity) {
-        this.bikes.add(entity);
+        int index = -1;
+
+        for(int i = 0;i < this.bikes.toArray().length;i++){
+            if(bikes.get(i).getId().equals(entity.getId())){
+                index = i;
+            }
+        }
+        if(index>-1){
+            this.bikes.set(index,entity);
+        }else{
+            this.bikes.add(entity);
+        }
+
         return entity;
     }
 

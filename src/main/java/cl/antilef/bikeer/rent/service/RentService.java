@@ -51,6 +51,7 @@ public class RentService {
                 .payment(null)
                 .build();
 
+        rent = rentRepository.save(rent);
 
         for (Bike bike: bikes){
             List<String> rents = bike.getRents();
@@ -63,7 +64,7 @@ public class RentService {
         }
 
         return new CreateRentResponseDTO(
-                rentRepository.save(rent),bikes
+                rent,bikes
 
         );
 
