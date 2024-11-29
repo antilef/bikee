@@ -40,16 +40,12 @@ public class RentController {
     public ResponseEntity<CreateRentResponseDTO> create(@RequestBody CreateRentRequestDTO request) {
 
 
-        Rent rent = null;
         try {
-            rent = rentService.create(request);
-            CreateRentResponseDTO response = CreateRentResponseDTO
-                    .builder()
-                    .rent(rent)
-                    .build();
-            return ResponseEntity.ok(response);
+
+            return ResponseEntity.ok(rentService.create(request));
+
         } catch (Exception e) {
-            CreateRentResponseDTO response = new  CreateRentResponseDTO(null);
+            CreateRentResponseDTO response = new  CreateRentResponseDTO(null,null);
             return ResponseEntity.badRequest().body(response);
         }
 

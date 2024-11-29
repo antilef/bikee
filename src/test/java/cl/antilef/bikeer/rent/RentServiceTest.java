@@ -49,7 +49,7 @@ public class RentServiceTest {
                 List.of("1"));
 
 
-        Rent rentCreated = rentService.create(request);
+        Rent rentCreated = rentService.create(request).getRent();
 
         Assertions.assertEquals("10",rentCreated.getPrice());
         Assertions.assertEquals(LocalDateTime.now().plusDays(1).getDayOfWeek(),rentCreated.getEndDate().getDayOfWeek());
