@@ -21,7 +21,7 @@ public class RentController {
     }
 
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/user/{user_id}")
     public ResponseEntity<AllRentResponseDTO> getAllRent(@PathVariable("user_id") String userId){
 
 
