@@ -140,7 +140,6 @@ public class RentServiceTest {
         String firstBikeRentId = bikes.get(0).getRents().getFirst();
         String secondBikeRentId = bikes.get(1).getRents().getFirst();
 
-
         Assertions.assertEquals(firstBikeRentId,secondBikeRentId);
         Assertions.assertEquals(rent.getId(),firstBikeRentId);
 

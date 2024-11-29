@@ -4,7 +4,6 @@ package cl.antilef.bikeer.rent.controller;
 import cl.antilef.bikeer.rent.dto.AllRentResponseDTO;
 import cl.antilef.bikeer.rent.dto.CreateRentRequestDTO;
 import cl.antilef.bikeer.rent.dto.CreateRentResponseDTO;
-import cl.antilef.bikeer.rent.entity.Rent;
 import cl.antilef.bikeer.rent.service.RentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

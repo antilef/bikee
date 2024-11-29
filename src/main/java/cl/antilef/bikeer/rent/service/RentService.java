@@ -60,8 +60,9 @@ public class RentService {
             }
             rents.add(rent.getId());
             bike.setRents(rents);
-            bikeRepository.save(bike);
         }
+
+        bikeRepository.saveAll(bikes);
 
         return new CreateRentResponseDTO(
                 rent,bikes
