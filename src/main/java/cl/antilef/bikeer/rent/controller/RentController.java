@@ -37,18 +37,26 @@ public class RentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateRentResponseDTO> create(@RequestBody CreateRentRequestDTO request){
+    public ResponseEntity<CreateRentResponseDTO> create(@RequestBody CreateRentRequestDTO request) {
+
+
+        Rent rent = null;
+        try {
+            rent = rentService.create(request);
+            CreateRentResponseDTO response = CreateRentResponseDTO
+                    .builder()
+                    .rent(rent)
+                    .build();
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            CreateRentResponseDTO response = new  CreateRentResponseDTO(null);
+            return ResponseEntity.badRequest().body(response);
+        }
 
 
 
-        Rent rent = rentService.create(request);
-
-
-        CreateRentResponseDTO response = CreateRentResponseDTO
-                .builder()
-                .rent(rent)
-                .build();
-        return ResponseEntity.ok(response);
     }
+
+
 
 }
