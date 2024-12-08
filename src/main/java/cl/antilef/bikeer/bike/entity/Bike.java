@@ -31,4 +31,6 @@ public class Bike {
 
     List<String> rents;
 
+    boolean available;
+
 }

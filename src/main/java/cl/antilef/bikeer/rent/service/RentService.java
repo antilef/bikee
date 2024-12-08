@@ -67,6 +67,7 @@ public class RentService {
             }
             rents.add(rent.getId());
             bike.setRents(rents);
+            bike.setAvailable(false);
         }
 
         bikeRepository.saveAll(bikes);
@@ -86,6 +87,15 @@ public class RentService {
 
 
         rent.setActivate(false);
+        for(String bikeId: rent.getBikes()){
+            Optional<Bike> bikeOptional = bikeRepository.findById(bikeId);
+            if(bikeOptional.isPresent()){
+                Bike bike = bikeOptional.get();
+                bike.setAvailable(true);
+                bikeRepository.save(bike);
+            }
+
+        }
 
         rentRepository.save(rent);
 
