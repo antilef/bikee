@@ -1,7 +1,7 @@
 package cl.antilef.bikeer.auth.service;
 
-import cl.antilef.bikeer.auth.dto.SignInRequestDTO;
-import cl.antilef.bikeer.auth.dto.SignUpRequestDTO;
+import cl.antilef.bikeer.auth.dto.SignInRequest;
+import cl.antilef.bikeer.auth.dto.SignUpRequest;
 import cl.antilef.bikeer.auth.exception.UserAlreadyExistException;
 import cl.antilef.bikeer.user.entity.User;
 import cl.antilef.bikeer.user.repository.MongoUserRepository;
@@ -30,7 +30,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User signup(SignUpRequestDTO input) throws UserAlreadyExistException {
+    public User signup(SignUpRequest input) throws UserAlreadyExistException {
 
         Optional<User> userOptional = userRepository.findByEmail(input.getEmail());
         if(userOptional.isPresent()){
@@ -45,7 +45,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public User authenticate(SignInRequestDTO input) {
+    public User authenticate(SignInRequest input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         input.getEmail(),

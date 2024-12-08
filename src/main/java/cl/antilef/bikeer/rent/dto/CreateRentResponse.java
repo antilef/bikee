@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class CreateRentResponseDTO {
+public class CreateRentResponse {
 
     //now
     private Rent rent;

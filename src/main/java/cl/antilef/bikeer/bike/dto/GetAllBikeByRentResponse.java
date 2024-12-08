@@ -5,5 +5,5 @@ import cl.antilef.bikeer.common.StatusResult;
 
 import java.util.List;
 
-public record GetAllBikeByRentResponseDTO(List<Bike> bikes, StatusResult result, String message, int length) {
+public record GetAllBikeByRentResponse(List<Bike> bikes, StatusResult result, String message, int length) {
 }

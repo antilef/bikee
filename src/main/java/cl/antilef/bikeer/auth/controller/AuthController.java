@@ -26,27 +26,27 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SignUpResponseDTO> register(@RequestBody SignUpRequestDTO registerUserDto) {
+    public ResponseEntity<SignUpResponse> register(@RequestBody SignUpRequest registerUserDto) {
         try{
             User registeredUser = authenticationService.signup(registerUserDto);
-            SignUpResponseDTO response = new SignUpResponseDTO("User Created",registeredUser.getEmail(),StatusResult.OK.toString());
+            SignUpResponse response = new SignUpResponse("User Created",registeredUser.getEmail(),StatusResult.OK.toString());
 
 
             return ResponseEntity.ok(response);
         }catch(Exception e){
-            SignUpResponseDTO response = new SignUpResponseDTO(e.getMessage(),null, StatusResult.NOK.toString());
+            SignUpResponse response = new SignUpResponse(e.getMessage(),null, StatusResult.NOK.toString());
             return ResponseEntity.badRequest().body(response);
         }
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity<SignInResponseDTO> authenticate(@RequestBody SignInRequestDTO loginUserDto) {
+    public ResponseEntity<SignInResponse> authenticate(@RequestBody SignInRequest loginUserDto) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        SignInResponseDTO loginResponse = SignInResponseDTO
+        SignInResponse loginResponse = SignInResponse
                 .builder()
                 .token(jwtToken)
                 .expiredIn(jwtService.getExpirationTime())

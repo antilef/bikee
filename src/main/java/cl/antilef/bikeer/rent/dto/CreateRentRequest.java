@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-public class CreateRentRequestDTO {
+public class CreateRentRequest {
 
     private String userId;
     private LocalDateTime endDate;

@@ -1,7 +1,7 @@
 package cl.antilef.bikeer.bike.controller;
 
-import cl.antilef.bikeer.bike.dto.GetAllBikeByRentResponseDTO;
-import cl.antilef.bikeer.bike.dto.GetBikeResponseDTO;
+import cl.antilef.bikeer.bike.dto.GetAllBikeByRentResponse;
+import cl.antilef.bikeer.bike.dto.GetBikeResponse;
 import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.bike.exception.BikeNotFoundException;
 import cl.antilef.bikeer.bike.service.BikeService;
@@ -24,24 +24,24 @@ public class BikeController {
     private BikeService bikeService;
 
     @GetMapping("/rent/{id}")
-    public ResponseEntity<GetAllBikeByRentResponseDTO> getAllBikes(@PathVariable("id") String id){
+    public ResponseEntity<GetAllBikeByRentResponse> getAllBikes(@PathVariable("id") String id){
 
         List<Bike> bikes = bikeService.getAllBikes(id);
-        GetAllBikeByRentResponseDTO response = new GetAllBikeByRentResponseDTO(bikes, StatusResult.OK,WebConstant.SUCCESS_TEXT,bikes.size());
+        GetAllBikeByRentResponse response = new GetAllBikeByRentResponse(bikes, StatusResult.OK,WebConstant.SUCCESS_TEXT,bikes.size());
         return ResponseEntity.ok(response) ;
 
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetBikeResponseDTO> getById(@PathVariable("id") String id){
+    public ResponseEntity<GetBikeResponse> getById(@PathVariable("id") String id){
         try {
             Bike bike = bikeService.getById(id);
-            GetBikeResponseDTO response = new GetBikeResponseDTO(bike, StatusResult.OK, WebConstant.SUCCESS_TEXT);
+            GetBikeResponse response = new GetBikeResponse(bike, StatusResult.OK, WebConstant.SUCCESS_TEXT);
             return ResponseEntity.ok(response) ;
 
         } catch (BikeNotFoundException e) {
-            GetBikeResponseDTO response = new GetBikeResponseDTO(null, StatusResult.NOK,e.getMessage());
+            GetBikeResponse response = new GetBikeResponse(null, StatusResult.NOK,e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
     }

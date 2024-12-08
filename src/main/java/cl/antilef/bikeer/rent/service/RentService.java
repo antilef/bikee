@@ -3,8 +3,8 @@ package cl.antilef.bikeer.rent.service;
 import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.bike.exception.NoBikesFoundException;
 import cl.antilef.bikeer.bike.repository.BikeRepository;
-import cl.antilef.bikeer.rent.dto.CreateRentRequestDTO;
-import cl.antilef.bikeer.rent.dto.CreateRentResponseDTO;
+import cl.antilef.bikeer.rent.dto.CreateRentRequest;
+import cl.antilef.bikeer.rent.dto.CreateRentResponse;
 import cl.antilef.bikeer.rent.entity.Rent;
 import cl.antilef.bikeer.rent.repository.RentRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class RentService {
 
     }
 
-    public CreateRentResponseDTO create(CreateRentRequestDTO request) throws Exception {
+    public CreateRentResponse create(CreateRentRequest request) throws Exception {
 
         List<Bike> bikes = bikeRepository.findAllIn(request.getBikes());
 
@@ -64,7 +64,7 @@ public class RentService {
 
         bikeRepository.saveAll(bikes);
 
-        return new CreateRentResponseDTO(
+        return new CreateRentResponse(
                 rent,bikes
 
         );

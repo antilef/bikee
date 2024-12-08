@@ -1,9 +1,9 @@
 package cl.antilef.bikeer.rent.controller;
 
 
-import cl.antilef.bikeer.rent.dto.AllRentResponseDTO;
-import cl.antilef.bikeer.rent.dto.CreateRentRequestDTO;
-import cl.antilef.bikeer.rent.dto.CreateRentResponseDTO;
+import cl.antilef.bikeer.rent.dto.AllRentResponse;
+import cl.antilef.bikeer.rent.dto.CreateRentRequest;
+import cl.antilef.bikeer.rent.dto.CreateRentResponse;
 import cl.antilef.bikeer.rent.service.RentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +22,10 @@ public class RentController {
 
 
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<AllRentResponseDTO> getAllRent(@PathVariable("user_id") String userId){
+    public ResponseEntity<AllRentResponse> getAllRent(@PathVariable("user_id") String userId){
 
 
-        AllRentResponseDTO response = AllRentResponseDTO
+        AllRentResponse response = AllRentResponse
                 .builder()
                 .userId(userId)
                 .rents(rentService.getAll(userId))
@@ -36,7 +36,7 @@ public class RentController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<CreateRentResponseDTO> create(@RequestBody CreateRentRequestDTO request) {
+    public ResponseEntity<CreateRentResponse> create(@RequestBody CreateRentRequest request) {
 
 
         try {
@@ -44,7 +44,7 @@ public class RentController {
             return ResponseEntity.ok(rentService.create(request));
 
         } catch (Exception e) {
-            CreateRentResponseDTO response = new  CreateRentResponseDTO(null,null);
+            CreateRentResponse response = new CreateRentResponse(null,null);
             return ResponseEntity.badRequest().body(response);
         }
 

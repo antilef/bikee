@@ -6,8 +6,8 @@ import cl.antilef.bikeer.bike.exception.NoBikesFoundException;
 import cl.antilef.bikeer.bike.repository.BikeRepository;
 import cl.antilef.bikeer.mocks.InMemoryBikeRepo;
 import cl.antilef.bikeer.mocks.InMemoryRentRepo;
-import cl.antilef.bikeer.rent.dto.CreateRentRequestDTO;
-import cl.antilef.bikeer.rent.dto.CreateRentResponseDTO;
+import cl.antilef.bikeer.rent.dto.CreateRentRequest;
+import cl.antilef.bikeer.rent.dto.CreateRentResponse;
 import cl.antilef.bikeer.rent.entity.Rent;
 import cl.antilef.bikeer.rent.repository.RentRepository;
 import cl.antilef.bikeer.rent.service.RentService;
@@ -46,7 +46,7 @@ public class RentServiceTest {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime tomorrow = now.plusDays(1);
 
-        CreateRentRequestDTO request = new CreateRentRequestDTO("1",tomorrow,"10",
+        CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
                 List.of("1"));
 
 
@@ -73,7 +73,7 @@ public class RentServiceTest {
 
 
 
-        CreateRentRequestDTO request = new CreateRentRequestDTO("1",tomorrow,"10",
+        CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
                 List.of("1"));
 
 
@@ -95,12 +95,12 @@ public class RentServiceTest {
         rentService = new RentService(rentRepository,bikeRepository);
 
 
-        CreateRentRequestDTO request = new CreateRentRequestDTO("1",tomorrow,"10",
+        CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
                 List.of("1"));
 
 
 
-        CreateRentResponseDTO result = rentService.create(request);
+        CreateRentResponse result = rentService.create(request);
 
         List<Bike> bikes = result.getBikes();
 
@@ -124,12 +124,12 @@ public class RentServiceTest {
         );
 
 
-        CreateRentRequestDTO request = new CreateRentRequestDTO("1",tomorrow,"10",
+        CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
                 idBikeAtStart);
 
 
 
-        CreateRentResponseDTO result = rentService.create(request);
+        CreateRentResponse result = rentService.create(request);
 
         List<Bike> bikes = result.getBikes();
         Rent rent = result.getRent();

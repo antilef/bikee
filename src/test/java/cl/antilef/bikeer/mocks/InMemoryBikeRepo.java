@@ -27,6 +27,11 @@ public class InMemoryBikeRepo implements BikeRepository {
     }
 
     @Override
+    public List<Bike> findAllByRent(List<String> ids) {
+        return this.bikes.stream().filter(elem -> elem.getRents().contains(ids.getFirst()) ).toList();
+    }
+
+    @Override
     public <S extends Bike> S insert(S entity) {
         return null;
     }

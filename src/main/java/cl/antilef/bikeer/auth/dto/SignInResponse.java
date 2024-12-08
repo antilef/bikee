@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SignInResponseDTO {
+public class SignInResponse {
     String token;
     long expiredIn;
 }
