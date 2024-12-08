@@ -33,4 +33,8 @@ public class Rent {
 
     private List<String> bikes;
 
+    public boolean isDeactivate(){
+        return !this.activate;
+    }
+
 }

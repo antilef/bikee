@@ -1,9 +1,9 @@
 package cl.antilef.bikeer.rent.controller;
 
 
-import cl.antilef.bikeer.rent.dto.AllRentResponse;
-import cl.antilef.bikeer.rent.dto.CreateRentRequest;
-import cl.antilef.bikeer.rent.dto.CreateRentResponse;
+import cl.antilef.bikeer.common.StatusResult;
+import cl.antilef.bikeer.common.WebConstant;
+import cl.antilef.bikeer.rent.dto.*;
 import cl.antilef.bikeer.rent.service.RentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +49,17 @@ public class RentController {
         }
 
 
+
+    }
+
+    @PostMapping("/close")
+    public ResponseEntity<CloseRentResponse> close(@RequestBody CloseRentRequest request){
+        try{
+            return ResponseEntity.ok(rentService.closeRent(request));
+        } catch (Exception e){
+            CloseRentResponse r = new CloseRentResponse(WebConstant.ERROR_TEXT, StatusResult.NOK,e.getMessage());
+            return ResponseEntity.badRequest().body(r);
+        }
 
     }
 
