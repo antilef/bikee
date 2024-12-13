@@ -44,7 +44,7 @@ public class RentService {
 
     }
 
-    public CreateRentResponse create(CreateRentRequest request) throws Exception {
+    public CreateRentResponse create(CreateRentRequest request){
 
 
         List<Bike> bikes = new ArrayList<>();
@@ -99,7 +99,7 @@ public class RentService {
 
     }
 
-    public CloseRentResponse closeRent(CloseRentRequest request) throws AlreadyDeactivateRentException, RentNotExistException {
+    public CloseRentResponse closeRent(CloseRentRequest request) {
 
 
         Rent rent = findValidClosableRent(request.idRent());
@@ -118,7 +118,7 @@ public class RentService {
         );
     }
 
-    private Rent findValidClosableRent(String id) throws RentNotExistException, AlreadyDeactivateRentException {
+    private Rent findValidClosableRent(String id) {
 
         Optional<Rent> optionalRent = rentRepository.findById(Integer.parseInt(id));
 

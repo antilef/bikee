@@ -30,7 +30,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User signup(SignUpRequest input) throws UserAlreadyExistException {
+    public User signup(SignUpRequest input){
 
         Optional<User> userOptional = userRepository.findByEmail(input.getEmail());
         if(userOptional.isPresent()){

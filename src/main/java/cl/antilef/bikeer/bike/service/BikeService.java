@@ -26,7 +26,7 @@ public class BikeService {
 
 
 
-    public Bike getById(String id) throws BikeNotFoundException {
+    public Bike getById(String id) {
 
         Optional<Bike> bikeOptional = bikeRepository.findById(Integer.parseInt(id));
         if(bikeOptional.isEmpty()){

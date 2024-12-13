@@ -36,7 +36,7 @@ public class UserService {
 
     }
 
-    public User editUser(UpdateUserDTO userDTO) throws UserNotFoundException {
+    public User editUser(UpdateUserDTO userDTO){
         Optional<User> userOptional = repository.findById(Integer.parseInt(userDTO.id()));
 
         if(userOptional.isEmpty()){

@@ -94,7 +94,7 @@ public class RentServiceTest {
     }
 
     @Test
-    void createRentAndCheckBikesStatus() throws Exception {
+    void createRentAndCheckBikesStatus()  {
 
 
         bikeRepository =  new InMemoryBikeRepo(createValidBikeInitialStatus());
@@ -121,7 +121,7 @@ public class RentServiceTest {
     }
 
     @Test
-    void createRentWithMoreOneBike() throws Exception {
+    void createRentWithMoreOneBike() {
 
 
         bikeRepository =  new InMemoryBikeRepo(createValidBike2InitialStatus());

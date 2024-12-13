@@ -68,7 +68,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void should_UpdateUser_When_InformationIsValidTest() throws UserNotFoundException {
+    void should_UpdateUser_When_InformationIsValidTest() {
 
         //TODO this test is fake
 
