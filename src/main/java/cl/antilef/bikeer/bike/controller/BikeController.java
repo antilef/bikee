@@ -1,19 +1,16 @@
 package cl.antilef.bikeer.bike.controller;
 
 import cl.antilef.bikeer.bike.dto.CreateBikeRequest;
-import cl.antilef.bikeer.bike.dto.GetAllBikeByRentResponse;
 import cl.antilef.bikeer.bike.dto.GetBikeResponse;
 import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.bike.exception.BikeNotFoundException;
 import cl.antilef.bikeer.bike.service.BikeService;
 import cl.antilef.bikeer.common.StatusResult;
 import cl.antilef.bikeer.common.WebConstant;
-import cl.antilef.bikeer.rent.dto.CreateRentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/bikes")
@@ -22,6 +19,9 @@ public class BikeController {
     @Autowired
     private BikeService bikeService;
 
+    public BikeController(BikeService bikeService) {
+        this.bikeService = bikeService;
+    }
 
 
     @GetMapping("/{id}")

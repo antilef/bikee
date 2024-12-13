@@ -6,7 +6,6 @@ import cl.antilef.bikeer.bike.exception.NoBikesFoundException;
 import cl.antilef.bikeer.bike.repository.BikeRepository;
 import cl.antilef.bikeer.mocks.InMemoryBikeRepo;
 import cl.antilef.bikeer.mocks.InMemoryRentRepo;
-import cl.antilef.bikeer.mocks.InMemoryUserRepo;
 import cl.antilef.bikeer.mocks.SingleUserRepo;
 import cl.antilef.bikeer.rent.dto.CreateRentRequest;
 import cl.antilef.bikeer.rent.dto.CreateRentResponse;
@@ -35,7 +34,7 @@ public class RentServiceTest {
 
 
     @Test
-    void createRentTest() throws Exception {
+    void createRentTest() {
 
         //Initial state of bike repo
 

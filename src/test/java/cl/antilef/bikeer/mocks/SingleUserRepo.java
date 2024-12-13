@@ -8,7 +8,7 @@ import java.util.Optional;
 public class SingleUserRepo implements UserRepository {
 
 
-    private User user;
+    private final User user;
 
     public SingleUserRepo(User user) {
         this.user = user;

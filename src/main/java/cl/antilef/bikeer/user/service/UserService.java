@@ -6,7 +6,6 @@ import cl.antilef.bikeer.user.dto.UpdateUserDTO;
 import cl.antilef.bikeer.user.entity.User;
 import cl.antilef.bikeer.user.exceptions.UserNotFoundException;
 import cl.antilef.bikeer.user.repository.UserRepository;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
