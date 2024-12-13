@@ -4,9 +4,6 @@ import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.bike.entity.BikeType;
 import cl.antilef.bikeer.bike.exception.NoBikesFoundException;
 import cl.antilef.bikeer.bike.repository.BikeRepository;
-import cl.antilef.bikeer.mocks.InMemoryBikeRepo;
-import cl.antilef.bikeer.mocks.InMemoryRentRepo;
-import cl.antilef.bikeer.mocks.SingleUserRepo;
 import cl.antilef.bikeer.rent.dto.CreateRentRequest;
 import cl.antilef.bikeer.rent.dto.CreateRentResponse;
 import cl.antilef.bikeer.rent.entity.Rent;
@@ -15,10 +12,18 @@ import cl.antilef.bikeer.rent.service.RentService;
 import cl.antilef.bikeer.user.entity.User;
 import cl.antilef.bikeer.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Optional;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class RentServiceTest {
@@ -31,29 +36,40 @@ public class RentServiceTest {
     LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
 
 
+    @BeforeEach
+    void setUp(){
+        bikeRepository = Mockito.mock(BikeRepository.class);
+        userRepository = Mockito.mock(UserRepository.class);
+        rentRepository = Mockito.mock(RentRepository.class);
+        rentService = new RentService(rentRepository,bikeRepository,userRepository);
+    }
 
 
     @Test
     void testCreateRent() {
 
-        //Initial state of bike repo
-
-        bikeRepository =  new InMemoryBikeRepo(createValidBikeInitialStatus());
-        User user = new User("f","x","a","sfs","wfsdf");
-        userRepository = new SingleUserRepo(user);
-
-
-
-        rentRepository = new InMemoryRentRepo(new CopyOnWriteArrayList<>());
-        rentService = new RentService(rentRepository,bikeRepository,userRepository);
-
-
-
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime tomorrow = now.plusDays(1);
 
+        User user = new User("francisco","antilef","antilef","536254263","wfsdfsadfsfd");
+        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
+
+
+        Rent rent = new Rent(1,user,LocalDateTime.now(),tomorrow,true,"10",List.of(bike));
         CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
                 List.of("1"));
+
+        List<Bike> bikes = List.of(bike);
+
+        when(bikeRepository.findAllById(request.getBikes()
+                .stream()
+                .map(Integer::parseInt)
+                .toList())
+        ).thenReturn(bikes);
+
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(rentRepository.save(Mockito.any(Rent.class))).thenReturn(rent);
 
 
         Rent rentCreated = rentService.create(request).getRent();
@@ -67,25 +83,19 @@ public class RentServiceTest {
     @Test
     void testCreateRentWithoutBikes()  {
 
-        //Initial state of bike repo
-        CopyOnWriteArrayList<Bike> bikes = new CopyOnWriteArrayList<>();
-
-        bikeRepository =  new InMemoryBikeRepo(bikes);
-
-
-
-        rentRepository = new InMemoryRentRepo(new CopyOnWriteArrayList<>());
-        rentService = new RentService(rentRepository,bikeRepository,userRepository);
-
-
-
         CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
                 List.of("1"));
 
+        List<Bike> bikes = Collections.emptyList();
 
-        NoBikesFoundException result = Assertions.assertThrows(NoBikesFoundException.class, () -> {
-            rentService.create(request);
-        });
+        when(bikeRepository.findAllById(request.getBikes()
+                .stream()
+                .map(Integer::parseInt)
+                .toList())
+        ).thenReturn(bikes);
+
+
+        NoBikesFoundException result = Assertions.assertThrows(NoBikesFoundException.class, () -> rentService.create(request));
 
         Assertions.assertEquals("No bikes founded",result.getMessage());
 
@@ -96,26 +106,42 @@ public class RentServiceTest {
     void testCreateRentAndCheckBikesStatus()  {
 
 
-        bikeRepository =  new InMemoryBikeRepo(createValidBikeInitialStatus());
-        rentRepository = new InMemoryRentRepo(new CopyOnWriteArrayList<>());
-        User user = new User("f","x","a","sfs","wfsdf");
-        userRepository = new SingleUserRepo(user);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tomorrow = now.plusDays(1);
 
-        rentService = new RentService(rentRepository,bikeRepository,userRepository);
+        User user = new User("francisco","antilef","antilef","536254263","wfsdfsadfsfd");
+        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
+        Bike spyBike = Mockito.spy(bike);
 
-
+        Rent rent = new Rent(1,user,LocalDateTime.now(),tomorrow,true,"10",List.of(bike));
         CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
                 List.of("1"));
 
+        List<Bike> bikes = List.of(spyBike);
+
+        when(bikeRepository.findAllById(request.getBikes()
+                .stream()
+                .map(Integer::parseInt)
+                .toList())
+        ).thenReturn(bikes);
+
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(rentRepository.save(Mockito.any(Rent.class))).thenReturn(rent);
 
 
         CreateRentResponse result = rentService.create(request);
 
-        List<Bike> bikes = result.getBikes();
+        List<Bike> bikesResult = result.getBikes();
 
-        //Assertions.assertEquals(bikes.getFirst().getRents().getFirst(),result.getRent().getId());
+
+        Assertions.assertEquals(bikesResult.getFirst().getRents().getFirst().getId(),result.getRent().getId());
         Assertions.assertEquals("10",result.getRent().getPrice());
+        Assertions.assertTrue(result.getRent().isActivate());
 
+        Assertions.assertFalse(bikesResult.getFirst().isAvailable());
+
+        verify(spyBike,Mockito.times(1)).setAvailable(false);
 
     }
 
@@ -123,20 +149,31 @@ public class RentServiceTest {
     void testCreateRentWithMoreOneBike() {
 
 
-        bikeRepository =  new InMemoryBikeRepo(createValidBike2InitialStatus());
-        rentRepository = new InMemoryRentRepo( new CopyOnWriteArrayList<>());
-        User user = new User("f","x","a","sfs","wfsdf");
-        userRepository = new SingleUserRepo(user);
-        rentService = new RentService(rentRepository,bikeRepository,userRepository);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tomorrow = now.plusDays(1);
 
+        User user = new User("francisco","antilef","antilef","536254263","wfsdfsadfsfd");
+        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
+        Bike bike2 = new Bike(2,"31BD31","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
+        Bike bike3 = new Bike(3,"33BD33","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
 
-        List<String> idBikeAtStart = List.of(
-                "1","2"
-        );
-
-
+        Rent rentMock = new Rent(1,user,LocalDateTime.now(),tomorrow,true,"10",List.of(bike));
         CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
-                idBikeAtStart);
+                List.of(
+                        "1","2","3"
+                ));
+
+        List<Bike> mockBikes = List.of(bike,bike2,bike3);
+
+        when(bikeRepository.findAllById(request.getBikes()
+                .stream()
+                .map(Integer::parseInt)
+                .toList())
+        ).thenReturn(mockBikes);
+
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(user));
+        when(rentRepository.save(Mockito.any(Rent.class))).thenReturn(rentMock);
 
 
 
@@ -145,37 +182,14 @@ public class RentServiceTest {
         List<Bike> bikes = result.getBikes();
         Rent rent = result.getRent();
 
-        Assertions.assertEquals(2,bikes.size());
+        Assertions.assertEquals(3,bikes.size());
 
 
-//        String firstBikeRentId = bikes.get(0).getRents().getFirst();
-//        String secondBikeRentId = bikes.get(1).getRents().getFirst();
-//
-//        Assertions.assertEquals(firstBikeRentId,secondBikeRentId);
-//        Assertions.assertEquals(rent.getId(),firstBikeRentId);
-//
-//        Assertions.assertEquals(2,rent.getBikes().size());
-//        Assertions.assertEquals(idBikeAtStart,rent.getBikes());
+        Assertions.assertEquals(rent.getId(),bikes.get(0).getRents().getFirst().getId());
+        Assertions.assertEquals(rent.getId(),bikes.get(1).getRents().getFirst().getId());
+        Assertions.assertEquals(bikes.get(0).getRents().getFirst().getId(),bikes.get(1).getRents().getFirst().getId());
 
-    }
 
-    private CopyOnWriteArrayList<Bike> createValidBikeInitialStatus(){
-        CopyOnWriteArrayList<Bike> bikes = new CopyOnWriteArrayList<>();
-
-        bikes.add(new Bike(1,"sdafasdf","mdk","dsfa","RED","26", BikeType.ELECTRIC,null,true));
-        bikes.add(new Bike(2,"gfgdf","mdk","dsfa","RED","27", BikeType.ELECTRIC,null,true));
-        bikes.add(new Bike(3,"srtrtysdf","mdk","dsfa","RED","24", BikeType.ELECTRIC,null,true));
-
-        return bikes;
-    }
-
-    private CopyOnWriteArrayList<Bike> createValidBike2InitialStatus(){
-        CopyOnWriteArrayList<Bike> bikes = new CopyOnWriteArrayList<>();
-
-        bikes.add(new Bike(1,"sdafasdf","mdk","dsfa","RED","26", BikeType.ELECTRIC,null,true));
-        bikes.add(new Bike(2,"gfgdf","mdk","dsfa","RED","27", BikeType.ELECTRIC,null,true));
-
-        return bikes;
     }
 }
 
