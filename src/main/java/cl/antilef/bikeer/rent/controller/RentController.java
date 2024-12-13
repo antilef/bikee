@@ -1,12 +1,16 @@
 package cl.antilef.bikeer.rent.controller;
 
-
+import cl.antilef.bikeer.bike.dto.GetAllBikeByRentResponse;
+import cl.antilef.bikeer.bike.entity.Bike;
+import cl.antilef.bikeer.bike.service.BikeService;
 import cl.antilef.bikeer.common.StatusResult;
 import cl.antilef.bikeer.common.WebConstant;
 import cl.antilef.bikeer.rent.dto.*;
 import cl.antilef.bikeer.rent.service.RentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -15,13 +19,15 @@ public class RentController {
 
 
     private final RentService rentService;
+    private final BikeService bikeService;
 
-    public RentController(RentService rentService) {
+    public RentController(RentService rentService, BikeService bikeService) {
         this.rentService = rentService;
+        this.bikeService = bikeService;
     }
 
 
-    @GetMapping("/user/{user_id}")
+    @GetMapping("/user/{user_id}/all")
     public ResponseEntity<AllRentResponse> getAllRent(@PathVariable("user_id") String userId){
 
 
@@ -32,6 +38,15 @@ public class RentController {
                 .build();
 
         return ResponseEntity.ok(response);
+
+    }
+
+    @GetMapping("/{id}/bikes")
+    public ResponseEntity<GetAllBikeByRentResponse> getAllBikes(@PathVariable("id") String id){
+
+        List<Bike> bikes = bikeService.getAllBikesByRent(id);
+        GetAllBikeByRentResponse response = new GetAllBikeByRentResponse(bikes, StatusResult.OK,WebConstant.SUCCESS_TEXT,bikes.size());
+        return ResponseEntity.ok(response) ;
 
     }
 

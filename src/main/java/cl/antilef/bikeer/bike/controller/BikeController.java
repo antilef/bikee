@@ -22,14 +22,6 @@ public class BikeController {
     @Autowired
     private BikeService bikeService;
 
-    @GetMapping("/rent/{id}/bikes")
-    public ResponseEntity<GetAllBikeByRentResponse> getAllBikes(@PathVariable("id") String id){
-
-        List<Bike> bikes = bikeService.getAllBikesByRent(id);
-        GetAllBikeByRentResponse response = new GetAllBikeByRentResponse(bikes, StatusResult.OK,WebConstant.SUCCESS_TEXT,bikes.size());
-        return ResponseEntity.ok(response) ;
-
-    }
 
 
     @GetMapping("/{id}")
