@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import jakarta.persistence.Id;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +39,7 @@ public class Rent {
     private String price;
 
     @ManyToMany(mappedBy = "rents")
+    @ToString.Exclude
     private List<Bike> bikes;
 
     public boolean isDeactivate(){
@@ -53,4 +55,5 @@ public class Rent {
             bike.setAvailable(true);
         });
     }
+
 }

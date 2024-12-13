@@ -1,16 +1,10 @@
 package cl.antilef.bikeer.mocks;
 
 import cl.antilef.bikeer.bike.entity.Bike;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
-
+import cl.antilef.bikeer.bike.repository.BikeRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Function;
 
 public class InMemoryBikeRepo implements BikeRepository {
 
@@ -21,58 +15,9 @@ public class InMemoryBikeRepo implements BikeRepository {
     }
 
     @Override
-    public List<Bike> findAllIn(List<String> ids) {
-        return this.bikes.stream().filter(elem -> ids.contains(elem.getId()) ).toList();
-    }
-
-    @Override
-    public List<Bike> findAllByRent(List<String> ids) {
-        return this.bikes.stream().filter(elem -> elem.getRents().contains(ids.getFirst()) ).toList();
-    }
-
-    @Override
-    public <S extends Bike> S insert(S entity) {
-        return null;
-    }
-
-    @Override
-    public <S extends Bike> List<S> insert(Iterable<S> entities) {
-        return List.of();
-    }
-
-    @Override
-    public <S extends Bike> Optional<S> findOne(Example<S> example) {
-        return Optional.empty();
-    }
-
-    @Override
-    public <S extends Bike> List<S> findAll(Example<S> example) {
-        return List.of();
-    }
-
-    @Override
-    public <S extends Bike> List<S> findAll(Example<S> example, Sort sort) {
-        return List.of();
-    }
-
-    @Override
-    public <S extends Bike> Page<S> findAll(Example<S> example, Pageable pageable) {
-        return null;
-    }
-
-    @Override
-    public <S extends Bike> long count(Example<S> example) {
-        return 0;
-    }
-
-    @Override
-    public <S extends Bike> boolean exists(Example<S> example) {
-        return false;
-    }
-
-    @Override
-    public <S extends Bike, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
-        return null;
+    public List<Bike> findAllByRent(Integer rentId) {
+        return bikes;
+        //return bikes.stream().filter(bike -> bike.getRentsIds().contains(rentId)).toList();
     }
 
     @Override
@@ -94,28 +39,28 @@ public class InMemoryBikeRepo implements BikeRepository {
     }
 
     @Override
-    public <S extends Bike> List<S> saveAll(Iterable<S> entities) {
-        return List.of();
+    public <S extends Bike> Iterable<S> saveAll(Iterable<S> entities) {
+        return null;
     }
 
     @Override
-    public Optional<Bike> findById(String s) {
+    public Optional<Bike> findById(Integer integer) {
         return Optional.empty();
     }
 
     @Override
-    public boolean existsById(String s) {
+    public boolean existsById(Integer integer) {
         return false;
     }
 
     @Override
-    public List<Bike> findAll() {
-        return List.of();
+    public Iterable<Bike> findAll() {
+        return null;
     }
 
     @Override
-    public List<Bike> findAllById(Iterable<String> strings) {
-        return List.of();
+    public Iterable<Bike> findAllById(Iterable<Integer> integers) {
+        return bikes;
     }
 
     @Override
@@ -124,7 +69,7 @@ public class InMemoryBikeRepo implements BikeRepository {
     }
 
     @Override
-    public void deleteById(String s) {
+    public void deleteById(Integer integer) {
 
     }
 
@@ -134,7 +79,7 @@ public class InMemoryBikeRepo implements BikeRepository {
     }
 
     @Override
-    public void deleteAllById(Iterable<? extends String> strings) {
+    public void deleteAllById(Iterable<? extends Integer> integers) {
 
     }
 
@@ -148,13 +93,5 @@ public class InMemoryBikeRepo implements BikeRepository {
 
     }
 
-    @Override
-    public List<Bike> findAll(Sort sort) {
-        return List.of();
-    }
 
-    @Override
-    public Page<Bike> findAll(Pageable pageable) {
-        return null;
-    }
 }

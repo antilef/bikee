@@ -46,9 +46,8 @@ public class RentService {
 
     public CreateRentResponse create(CreateRentRequest request) throws Exception {
 
-        //List<Bike> bikes = bikeRepository.findAllIn(request.getBikes());
-        List<Bike> bikes = new ArrayList<>();
 
+        List<Bike> bikes = new ArrayList<>();
         bikeRepository.findAllById(
                 request.getBikes()
                         .stream()
@@ -56,7 +55,7 @@ public class RentService {
                         .toList()
         ).forEach(bikes::add);
 
-        if(!bikes.iterator().hasNext()){
+        if(bikes.isEmpty()){
             throw new NoBikesFoundException("No bikes founded");
         }
 

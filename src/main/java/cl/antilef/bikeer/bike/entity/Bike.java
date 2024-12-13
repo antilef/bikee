@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import jakarta.persistence.Id;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -38,7 +39,12 @@ public class Bike {
     @JoinTable(name = "bike_rent",
             joinColumns = @JoinColumn(name = "bike_id"),
             inverseJoinColumns = @JoinColumn(name = "rent_id"))
+    @ToString.Exclude
     List<Rent> rents;
+
+    public List<Integer> getRentsIds(){
+        return this.rents.stream().map(Rent::getId).toList();
+    }
 
     boolean available;
 
