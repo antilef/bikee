@@ -1,4 +1,4 @@
 package cl.antilef.bikeer.user.dto;
 
-public record CreateUserDTO(String firstname, String lastname, String phone) {
+public record CreateUserDTO(String firstname, String lastname,String email ,String phone) {
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.Id;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,6 +27,7 @@ public class User implements UserDetails {
 
     private String firstName;
 
+    @Column(unique = true)
     private String email;
 
     private String lastName;
@@ -37,12 +39,13 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Rent> rents;
 
-    public User(String firstName, String lastName,String phone) {
+    public User(String firstName, String lastName,String email,String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
+        this.email = email;
     }
-    private User(String id,String firstName, String lastName,String phone) {
+    private User(Integer id,String firstName, String lastName,String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

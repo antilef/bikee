@@ -17,6 +17,11 @@ public class InMemoryUserRepo implements UserRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return false;
+    }
+
+    @Override
     public <S extends User> S save(S entity) {
         return null;
     }

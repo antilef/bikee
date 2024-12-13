@@ -1,5 +1,6 @@
 package cl.antilef.bikeer.user;
 
+import cl.antilef.bikeer.auth.exception.UserAlreadyExistException;
 import cl.antilef.bikeer.user.dto.CreateUserDTO;
 import cl.antilef.bikeer.user.dto.UpdateUserDTO;
 import cl.antilef.bikeer.user.entity.User;
@@ -28,18 +29,33 @@ public class UserServiceTest {
     }
 
     @Test
-    void createUserTest(){
+    void should_CreateUser_When_DataExist(){
 
-        User mockUser = new User("Francisco", "Antilef", "345346436");
+        User mockUser = new User("Francisco", "Antilef","antilef@bikker.cl","345346436");
         when(userRepository.save(Mockito.any(User.class))).thenReturn(mockUser);
 
-        CreateUserDTO cudto = new CreateUserDTO("Francisco","Antilef","345346436");
+        CreateUserDTO cudto = new CreateUserDTO("Francisco","Antilef","antilef@bikker.cl","345346436");
         User result = us.createUser(cudto);
 
         assertEquals("Francisco", result.getFirstName());
     }
+
     @Test
-    void updateNotFoundUserTest() {
+    void should_TrowAlreadyExitsUserException_When_ExistUserTest(){
+
+        when(userRepository.existsByEmail("antilef@bikeer.cl")).thenReturn(true);
+
+        CreateUserDTO cudto = new CreateUserDTO("Francisco","Antilef","antilef@bikeer.cl","345346436");
+
+        assertThrows(UserAlreadyExistException.class,()-> us.createUser(cudto));
+
+        Mockito.verify(userRepository, Mockito.never()).save(Mockito.any(User.class));
+    }
+
+
+
+    @Test
+    void should_TrowUserNotFoundException_When_NotFoundUserTest() {
 
         when(userRepository.findById(Mockito.any(Integer.class))).thenReturn(Optional.empty());
 
@@ -52,7 +68,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void updateUserTest() throws UserNotFoundException {
+    void should_UpdateUser_When_InformationIsValidTest() throws UserNotFoundException {
 
         //TODO this test is fake
 
