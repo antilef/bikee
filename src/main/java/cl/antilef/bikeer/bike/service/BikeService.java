@@ -3,7 +3,6 @@ package cl.antilef.bikeer.bike.service;
 import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.bike.exception.BikeNotFoundException;
 import cl.antilef.bikeer.bike.repository.BikeRepository;
-import cl.antilef.bikeer.config.JwtAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class BikeService {
 
     public Bike getById(String id) throws BikeNotFoundException {
 
-        Optional<Bike> bikeOptional = bikeRepository.findById(id);
+        Optional<Bike> bikeOptional = bikeRepository.findById(Integer.parseInt(id));
         if(bikeOptional.isEmpty()){
             throw new BikeNotFoundException("Bike was not found");
         }
@@ -36,9 +35,9 @@ public class BikeService {
 
     }
 
-    public List<Bike> getAllBikes(String id) {
+    public List<Bike> getAllBikesByRent(String id) {
         logger.info("Calling BikeService[getAllBikes]");
-        return bikeRepository.findAllByRent(List.of(id));
+        return bikeRepository.findAllByRent(Integer.parseInt(id));
 
     }
 }

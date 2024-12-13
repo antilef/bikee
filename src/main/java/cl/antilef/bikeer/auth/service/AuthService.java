@@ -4,7 +4,7 @@ import cl.antilef.bikeer.auth.dto.SignInRequest;
 import cl.antilef.bikeer.auth.dto.SignUpRequest;
 import cl.antilef.bikeer.auth.exception.UserAlreadyExistException;
 import cl.antilef.bikeer.user.entity.User;
-import cl.antilef.bikeer.user.repository.MongoUserRepository;
+import cl.antilef.bikeer.user.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,14 +14,14 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
-    private final MongoUserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
 
     public AuthService(
-            MongoUserRepository userRepository,
+            UserRepository userRepository,
             AuthenticationManager authenticationManager,
             PasswordEncoder passwordEncoder
     ) {

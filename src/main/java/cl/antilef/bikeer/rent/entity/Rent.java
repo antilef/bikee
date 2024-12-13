@@ -2,10 +2,13 @@ package cl.antilef.bikeer.rent.entity;
 
 
 
+import cl.antilef.bikeer.bike.entity.Bike;
+import cl.antilef.bikeer.user.entity.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,13 +16,18 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
-
+@Entity
+@Table(name = "rents")
 public class Rent {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-    private String userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private LocalDateTime startDate;
 
@@ -29,12 +37,20 @@ public class Rent {
 
     private String price;
 
-    private Payment payment;
-
-    private List<String> bikes;
+    @ManyToMany(mappedBy = "rents")
+    private List<Bike> bikes;
 
     public boolean isDeactivate(){
         return !this.activate;
     }
 
+    public Iterable<Integer> getBikeIds(){
+        return bikes.stream().map(Bike::getId).toList();
+    }
+
+    public void setAvailableAllBikes(Iterable<Bike> bikes) {
+        bikes.forEach(bike -> {
+            bike.setAvailable(true);
+        });
+    }
 }

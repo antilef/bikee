@@ -1,6 +1,6 @@
 package cl.antilef.bikeer.config;
 
-import cl.antilef.bikeer.user.repository.MongoUserRepository;
+import cl.antilef.bikeer.user.repository.UserRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 
@@ -15,9 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class ApplicationConfiguration {
-    private final MongoUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public ApplicationConfiguration(MongoUserRepository userRepository) {
+    public ApplicationConfiguration(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

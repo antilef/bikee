@@ -1,10 +1,12 @@
 package cl.antilef.bikeer.user.entity;
 
 
+import cl.antilef.bikeer.rent.entity.Rent;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,10 +16,13 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
+@Entity
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
-    public String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer id;
 
     private String firstName;
 
@@ -26,8 +31,11 @@ public class User implements UserDetails {
     private String lastName;
 
     private String password;
+
     private String phone;
 
+    @OneToMany(mappedBy = "user")
+    private List<Rent> rents;
 
     public User(String firstName, String lastName,String phone) {
         this.firstName = firstName;

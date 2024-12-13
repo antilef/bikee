@@ -4,7 +4,6 @@ import cl.antilef.bikeer.user.dto.CreateUserDTO;
 import cl.antilef.bikeer.user.dto.UpdateUserDTO;
 import cl.antilef.bikeer.user.entity.User;
 import cl.antilef.bikeer.user.exceptions.UserNotFoundException;
-import cl.antilef.bikeer.user.repository.MongoUserRepository;
 import cl.antilef.bikeer.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

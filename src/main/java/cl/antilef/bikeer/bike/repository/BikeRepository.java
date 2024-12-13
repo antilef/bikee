@@ -1,16 +1,13 @@
 package cl.antilef.bikeer.bike.repository;
 
 import cl.antilef.bikeer.bike.entity.Bike;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface BikeRepository extends MongoRepository<Bike,String> {
-
-    @Query(value="{'_id': {$in: ?0}}")
-    List<Bike> findAllIn(List<String> ids);
-
-    @Query(value="{'rents': {$in : ?0}}")
-    List<Bike> findAllByRent(List<String> id);
+public interface BikeRepository extends CrudRepository<Bike,Integer> {
+    @Query("SELECT b FROM Bike b JOIN b.rents r WHERE r.id = :rentId")
+    List<Bike> findAllByRent(@Param("rentId") Integer rentId);
 }

@@ -1,7 +1,6 @@
 package cl.antilef.bikeer.mocks;
 
 import cl.antilef.bikeer.rent.entity.Rent;
-import cl.antilef.bikeer.rent.repository.RentRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

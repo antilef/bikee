@@ -13,6 +13,9 @@ import cl.antilef.bikeer.rent.entity.Rent;
 import cl.antilef.bikeer.rent.exception.AlreadyDeactivateRentException;
 import cl.antilef.bikeer.rent.exception.RentNotExistException;
 import cl.antilef.bikeer.rent.repository.RentRepository;
+import cl.antilef.bikeer.user.entity.User;
+import cl.antilef.bikeer.user.exceptions.UserNotFoundException;
+import cl.antilef.bikeer.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,47 +28,64 @@ public class RentService {
 
     private final RentRepository rentRepository;
     private final BikeRepository bikeRepository;
+    private final UserRepository userRepository;
 
-    public RentService(RentRepository repository, BikeRepository bikeRepository) {
+    public RentService(RentRepository repository, BikeRepository bikeRepository, UserRepository userRepository) {
 
         this.rentRepository = repository;
         this.bikeRepository = bikeRepository;
+        this.userRepository = userRepository;
 
     }
 
     public List<Rent> getAll(String userId) {
 
-        return rentRepository.findByUserId(userId);
+        return rentRepository.findByUserId(Integer.parseInt(userId));
 
     }
 
     public CreateRentResponse create(CreateRentRequest request) throws Exception {
 
-        List<Bike> bikes = bikeRepository.findAllIn(request.getBikes());
+        //List<Bike> bikes = bikeRepository.findAllIn(request.getBikes());
+        List<Bike> bikes = new ArrayList<>();
 
-        if(bikes.isEmpty()){
+        bikeRepository.findAllById(
+                request.getBikes()
+                        .stream()
+                        .map(Integer::parseInt)
+                        .toList()
+        ).forEach(bikes::add);
+
+        if(!bikes.iterator().hasNext()){
             throw new NoBikesFoundException("No bikes founded");
         }
+
+        Optional<User> optionalUser = userRepository.findById(Integer.parseInt(request.getUserId()));
+        if(optionalUser.isEmpty()){
+            throw new UserNotFoundException("The user was not founded");
+        }
+
+        User user = optionalUser.get();
 
         Rent rent = Rent
                 .builder()
                 .price(request.getPrice())
-                .bikes(request.getBikes())
+                .bikes(bikes)
                 .activate(true)
                 .startDate(LocalDateTime.now())
                 .endDate(request.getEndDate())
-                .userId(request.getUserId())
-                .payment(null)
+                .user(user)
+                //.payment(null)
                 .build();
 
         rent = rentRepository.save(rent);
 
         for (Bike bike: bikes){
-            List<String> rents = bike.getRents();
+            List<Rent> rents = bike.getRents();
             if(rents == null){
                 rents = new ArrayList<>();
             }
-            rents.add(rent.getId());
+            rents.add(rent);
             bike.setRents(rents);
             bike.setAvailable(false);
         }
@@ -84,19 +104,14 @@ public class RentService {
 
 
         Rent rent = findValidClosableRent(request.idRent());
+        Iterable<Bike> bikes = bikeRepository.findAllById(rent.getBikeIds());
 
 
         rent.setActivate(false);
-        for(String bikeId: rent.getBikes()){
-            Optional<Bike> bikeOptional = bikeRepository.findById(bikeId);
-            if(bikeOptional.isPresent()){
-                Bike bike = bikeOptional.get();
-                bike.setAvailable(true);
-                bikeRepository.save(bike);
-            }
+        rent.setAvailableAllBikes(bikes);
 
-        }
 
+        bikeRepository.saveAll(bikes);
         rentRepository.save(rent);
 
         return new CloseRentResponse(
@@ -106,7 +121,7 @@ public class RentService {
 
     private Rent findValidClosableRent(String id) throws RentNotExistException, AlreadyDeactivateRentException {
 
-        Optional<Rent> optionalRent = rentRepository.findById(id);
+        Optional<Rent> optionalRent = rentRepository.findById(Integer.parseInt(id));
 
         if(optionalRent.isEmpty() || optionalRent.get().getId() == null){
             throw new RentNotExistException("The rent not exist");

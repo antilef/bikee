@@ -4,7 +4,7 @@ import cl.antilef.bikeer.user.dto.CreateUserDTO;
 import cl.antilef.bikeer.user.dto.UpdateUserDTO;
 import cl.antilef.bikeer.user.entity.User;
 import cl.antilef.bikeer.user.exceptions.UserNotFoundException;
-import cl.antilef.bikeer.user.repository.MongoUserRepository;
+import cl.antilef.bikeer.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +15,10 @@ import java.util.Optional;
 public class UserService {
 
     @Autowired
-    private final MongoUserRepository repository;
+    private final UserRepository repository;
 
 
-    public UserService(MongoUserRepository repository) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
     }
 
@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public User editUser(UpdateUserDTO userDTO) throws UserNotFoundException {
-        Optional<User> userOptional = repository.findById(userDTO.id());
+        Optional<User> userOptional = repository.findById(Integer.parseInt(userDTO.id()));
 
         if(userOptional.isEmpty()){
             throw new UserNotFoundException("User not found, cannot update");

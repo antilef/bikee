@@ -1,7 +1,6 @@
 package cl.antilef.bikeer.mocks;
 
 import cl.antilef.bikeer.bike.entity.Bike;
-import cl.antilef.bikeer.bike.repository.BikeRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

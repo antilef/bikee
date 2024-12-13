@@ -1,10 +1,12 @@
 package cl.antilef.bikeer.bike.entity;
 
 
+import cl.antilef.bikeer.rent.entity.Rent;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 import java.util.List;
 
@@ -12,10 +14,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "bikes")
 public class Bike {
 
-    @Id
-    String id;
+    @Id()
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Integer id;
 
     String serial;
 
@@ -29,7 +34,11 @@ public class Bike {
 
     BikeType Type;
 
-    List<String> rents;
+    @ManyToMany
+    @JoinTable(name = "bike_rent",
+            joinColumns = @JoinColumn(name = "bike_id"),
+            inverseJoinColumns = @JoinColumn(name = "rent_id"))
+    List<Rent> rents;
 
     boolean available;
 
