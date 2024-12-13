@@ -1,5 +1,6 @@
 package cl.antilef.bikeer.bike.service;
 
+import cl.antilef.bikeer.bike.dto.CreateBikeRequest;
 import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.bike.exception.BikeNotFoundException;
 import cl.antilef.bikeer.bike.repository.BikeRepository;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +41,20 @@ public class BikeService {
         logger.info("Calling BikeService[getAllBikes]");
         return bikeRepository.findAllByRent(Integer.parseInt(id));
 
+    }
+
+    public Bike createBike(CreateBikeRequest createBikeRequest){
+        logger.info("Creating Bike...");
+        Bike bike = Bike.builder()
+                .serial(createBikeRequest.serial())
+                .Type(createBikeRequest.Type())
+                .model(createBikeRequest.model())
+                .color(createBikeRequest.color())
+                .size(createBikeRequest.size())
+                .brand(createBikeRequest.brand())
+                .rents(new ArrayList<>())
+                .available(true)
+                .build();
+        return bikeRepository.save(bike);
     }
 }

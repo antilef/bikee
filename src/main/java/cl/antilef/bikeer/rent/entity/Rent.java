@@ -4,6 +4,8 @@ package cl.antilef.bikeer.rent.entity;
 
 import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +14,8 @@ import jakarta.persistence.Id;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -40,6 +44,8 @@ public class Rent {
 
     @ManyToMany(mappedBy = "rents")
     @ToString.Exclude
+    @JsonManagedReference
+    @JsonIgnore
     private List<Bike> bikes;
 
     public boolean isDeactivate(){
@@ -47,6 +53,9 @@ public class Rent {
     }
 
     public Iterable<Integer> getBikeIds(){
+        if(bikes == null){
+            return Collections.emptyList();
+        }
         return bikes.stream().map(Bike::getId).toList();
     }
 
@@ -56,4 +65,16 @@ public class Rent {
         });
     }
 
+    @Override
+    public String toString() {
+        return "Rent{" +
+                "id=" + id +
+                ", user=" + user +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", activate=" + activate +
+                ", price='" + price + '\'' +
+                ", bikes=" + getBikeIds() +
+                '}';
+    }
 }

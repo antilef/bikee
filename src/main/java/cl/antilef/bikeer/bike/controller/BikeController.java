@@ -1,5 +1,6 @@
 package cl.antilef.bikeer.bike.controller;
 
+import cl.antilef.bikeer.bike.dto.CreateBikeRequest;
 import cl.antilef.bikeer.bike.dto.GetAllBikeByRentResponse;
 import cl.antilef.bikeer.bike.dto.GetBikeResponse;
 import cl.antilef.bikeer.bike.entity.Bike;
@@ -7,12 +8,10 @@ import cl.antilef.bikeer.bike.exception.BikeNotFoundException;
 import cl.antilef.bikeer.bike.service.BikeService;
 import cl.antilef.bikeer.common.StatusResult;
 import cl.antilef.bikeer.common.WebConstant;
+import cl.antilef.bikeer.rent.dto.CreateRentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,8 +45,11 @@ public class BikeController {
         }
     }
 
-
-
+    @PostMapping("/create")
+    public ResponseEntity<Bike> create(@RequestBody CreateBikeRequest request){
+        Bike bike = bikeService.createBike(request);
+        return ResponseEntity.ok(bike);
+    }
 
 
 }
