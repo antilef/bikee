@@ -34,7 +34,7 @@ public class RentServiceTest {
 
 
     @Test
-    void createRentTest() {
+    void testCreateRent() {
 
         //Initial state of bike repo
 
@@ -65,7 +65,7 @@ public class RentServiceTest {
     }
 
     @Test
-    void createRentWithoutBikesTest()  {
+    void testCreateRentWithoutBikes()  {
 
         //Initial state of bike repo
         CopyOnWriteArrayList<Bike> bikes = new CopyOnWriteArrayList<>();
@@ -93,7 +93,7 @@ public class RentServiceTest {
     }
 
     @Test
-    void createRentAndCheckBikesStatus()  {
+    void testCreateRentAndCheckBikesStatus()  {
 
 
         bikeRepository =  new InMemoryBikeRepo(createValidBikeInitialStatus());
@@ -120,7 +120,7 @@ public class RentServiceTest {
     }
 
     @Test
-    void createRentWithMoreOneBike() {
+    void testCreateRentWithMoreOneBike() {
 
 
         bikeRepository =  new InMemoryBikeRepo(createValidBike2InitialStatus());

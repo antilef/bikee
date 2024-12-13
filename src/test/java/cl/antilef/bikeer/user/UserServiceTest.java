@@ -43,7 +43,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void should_TrowAlreadyExitsUserException_When_ExistUserTest(){
+    void shouldTrowAlreadyExitsUserExceptionWhenExistUserTest(){
 
         when(userRepository.existsByEmail("antilef@bikeer.cl")).thenReturn(true);
 
@@ -57,7 +57,7 @@ public class UserServiceTest {
 
 
     @Test
-    void should_TrowUserNotFoundException_When_TryToUpdateNotExistUserTest() {
+    void shouldTrowUserNotFoundExceptionWhenTryToUpdateNotExistUserTest() {
 
         when(userRepository.findById(Mockito.any(Integer.class))).thenReturn(Optional.empty());
 
@@ -70,7 +70,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void should_UpdateUser_When_InformationIsValidTest() {
+    void testUpdateUserWhenInformationIsValidTest() {
 
         User mockUser = User.withId("12", "Francisco", "Antilef","antilef@bikeer.cl" ,"345346436");
         User spyUser = Mockito.spy(mockUser);
