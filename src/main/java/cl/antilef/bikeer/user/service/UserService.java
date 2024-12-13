@@ -44,9 +44,8 @@ public class UserService {
 
         User user = userOptional.get();
 
-        user.setFirstName(userDTO.firstname());
-        user.setLastName(userDTO.lastname());
-        user.setPhone(userDTO.phone());
+
+        user.update(userDTO);
 
         return this.repository.save(user);
 

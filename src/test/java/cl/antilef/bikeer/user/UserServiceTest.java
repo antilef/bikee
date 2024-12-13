@@ -29,10 +29,12 @@ public class UserServiceTest {
     }
 
     @Test
-    void should_CreateUser_When_DataExist(){
+    void testCreateUser(){
 
         User mockUser = new User("Francisco", "Antilef","antilef@bikker.cl","345346436");
+
         when(userRepository.save(Mockito.any(User.class))).thenReturn(mockUser);
+        when(userRepository.existsByEmail("antilef@bikeer.cl")).thenReturn(false);
 
         CreateUserDTO cudto = new CreateUserDTO("Francisco","Antilef","antilef@bikker.cl","345346436");
         User result = us.createUser(cudto);
@@ -55,7 +57,7 @@ public class UserServiceTest {
 
 
     @Test
-    void should_TrowUserNotFoundException_When_NotFoundUserTest() {
+    void should_TrowUserNotFoundException_When_TryToUpdateNotExistUserTest() {
 
         when(userRepository.findById(Mockito.any(Integer.class))).thenReturn(Optional.empty());
 
@@ -70,12 +72,11 @@ public class UserServiceTest {
     @Test
     void should_UpdateUser_When_InformationIsValidTest() {
 
-        //TODO this test is fake
+        User mockUser = User.withId("12", "Francisco", "Antilef","antilef@bikeer.cl" ,"345346436");
+        User spyUser = Mockito.spy(mockUser);
 
-        User mockUser = User.withId("23489023904", "Francisco", "Antilef", "345346436");
-        when(userRepository.findById(Mockito.any(Integer.class))).thenReturn(Optional.of(mockUser));
-
-        when(userRepository.save(Mockito.any(User.class))).thenReturn(mockUser);
+        when(userRepository.findById(Mockito.any(Integer.class))).thenReturn(Optional.of(spyUser));
+        when(userRepository.save(Mockito.any(User.class))).thenReturn(spyUser);
 
 
         UpdateUserDTO uudto = new UpdateUserDTO("24","Franco","Antilef","452143244");
@@ -83,6 +84,8 @@ public class UserServiceTest {
         User result = us.editUser(uudto);
 
         assertEquals("452143244",result.getPhone());
+        assertEquals("Franco",result.getFirstName());
+        Mockito.verify(spyUser, Mockito.times(1)).update(uudto);
 
     }
 }

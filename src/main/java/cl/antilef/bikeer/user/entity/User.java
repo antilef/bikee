@@ -2,6 +2,7 @@ package cl.antilef.bikeer.user.entity;
 
 
 import cl.antilef.bikeer.rent.entity.Rent;
+import cl.antilef.bikeer.user.dto.UpdateUserDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,8 +54,8 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public static User withId(String id,String firstName,String lastName,String phone){
-        return new User(id,firstName,lastName,phone);
+    public static User withId(String id,String firstName,String lastName,String email,String phone){
+        return new User(id,firstName,lastName,email,phone);
     }
 
     @Override
@@ -72,5 +73,11 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public void update(UpdateUserDTO userDTO) {
+        this.setFirstName(userDTO.firstname());
+        this.setLastName(userDTO.lastname());
+        this.setPhone(userDTO.phone());
     }
 }
