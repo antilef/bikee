@@ -11,7 +11,7 @@ import lombok.Data;
 import jakarta.persistence.Id;
 import lombok.ToString;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -46,6 +46,8 @@ public class Bike {
     @JsonManagedReference
     @JsonIgnore
     List<Rent> rents ;
+
+    Integer actualRentId;
 
     public List<Integer> getRentsIds(){
         return this.rents.stream().map(Rent::getId).toList();

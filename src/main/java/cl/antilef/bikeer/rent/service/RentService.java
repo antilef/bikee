@@ -86,6 +86,7 @@ public class RentService {
             }
             rents.add(rent);
             bike.setRents(rents);
+            bike.setActualRentId(rent.getId());
             bike.setAvailable(false);
         }
 
@@ -105,10 +106,7 @@ public class RentService {
         Rent rent = findValidClosableRent(request.idRent());
         Iterable<Bike> bikes = bikeRepository.findAllById(rent.getBikeIds());
 
-
-        rent.setActivate(false);
-        rent.setAvailableAllBikes(bikes);
-
+        rent.close(bikes);
 
         bikeRepository.saveAll(bikes);
         rentRepository.save(rent);

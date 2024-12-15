@@ -14,7 +14,6 @@ import jakarta.persistence.Id;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -62,6 +61,7 @@ public class Rent {
     public void setAvailableAllBikes(Iterable<Bike> bikes) {
         bikes.forEach(bike -> {
             bike.setAvailable(true);
+            bike.setActualRentId(null);
         });
     }
 
@@ -76,5 +76,10 @@ public class Rent {
                 ", price='" + price + '\'' +
                 ", bikes=" + getBikeIds() +
                 '}';
+    }
+
+    public void close(Iterable<Bike> bikes) {
+        this.setActivate(false);
+        this.setAvailableAllBikes(bikes);
     }
 }
