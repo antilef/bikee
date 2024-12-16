@@ -52,7 +52,7 @@ public class RentServiceTest {
         LocalDateTime tomorrow = now.plusDays(1);
 
         User user = new User("francisco","antilef","antilef","536254263","wfsdfsadfsfd");
-        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
+        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),null,true);
 
 
         Rent rent = new Rent(1,user,LocalDateTime.now(),tomorrow,true,"10",List.of(bike));
@@ -110,7 +110,7 @@ public class RentServiceTest {
         LocalDateTime tomorrow = now.plusDays(1);
 
         User user = new User("francisco","antilef","antilef","536254263","wfsdfsadfsfd");
-        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
+        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),null,true);
         Bike spyBike = Mockito.spy(bike);
 
         Rent rent = new Rent(1,user,LocalDateTime.now(),tomorrow,true,"10",List.of(bike));
@@ -153,9 +153,9 @@ public class RentServiceTest {
         LocalDateTime tomorrow = now.plusDays(1);
 
         User user = new User("francisco","antilef","antilef","536254263","wfsdfsadfsfd");
-        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
-        Bike bike2 = new Bike(2,"31BD31","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
-        Bike bike3 = new Bike(3,"33BD33","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),true);
+        Bike bike = new Bike(1,"32BD32","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),null,true);
+        Bike bike2 = new Bike(2,"31BD31","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),null,true);
+        Bike bike3 = new Bike(3,"33BD33","BRAND","XLD","RED","29",BikeType.TOURING,new ArrayList<>(),null,true);
 
         Rent rentMock = new Rent(1,user,LocalDateTime.now(),tomorrow,true,"10",List.of(bike));
         CreateRentRequest request = new CreateRentRequest("1",tomorrow,"10",
