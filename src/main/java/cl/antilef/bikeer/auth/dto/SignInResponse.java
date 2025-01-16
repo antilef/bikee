@@ -9,4 +9,8 @@ import lombok.*;
 public class SignInResponse {
     String token;
     long expiredIn;
+    Integer userId;
+    String email;
+    String firstName;
+    String lastName;
 }

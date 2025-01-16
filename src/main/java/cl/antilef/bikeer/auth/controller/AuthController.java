@@ -49,6 +49,10 @@ public class AuthController {
         SignInResponse loginResponse = SignInResponse
                 .builder()
                 .token(jwtToken)
+                .userId(authenticatedUser.getId())
+                .email(authenticatedUser.getEmail())
+                .firstName(authenticatedUser.getFirstName())
+                .lastName(authenticatedUser.getLastName())
                 .expiredIn(jwtService.getExpirationTime())
                 .build();
 
