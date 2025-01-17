@@ -14,8 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -24,7 +22,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
 
     public JwtAuthenticationFilter(
             JwtService jwtService,
@@ -71,7 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
 
-            logger.error("Exception occurred: {}", exception.getMessage());
+            logger.error("Exception occurred: {}", exception);
 
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("application/json");
@@ -82,7 +80,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 response.getWriter().write(jsonResponse);
             } catch (IOException ioException) {
-                logger.error("Error writing response: {}", ioException.getMessage());
+                logger.error("Error writing response: {}", ioException);
             }
         }
     }

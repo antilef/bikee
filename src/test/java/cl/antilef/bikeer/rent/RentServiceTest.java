@@ -26,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class RentServiceTest {
+class RentServiceTest {
 
     private RentService rentService;
     private RentRepository rentRepository;

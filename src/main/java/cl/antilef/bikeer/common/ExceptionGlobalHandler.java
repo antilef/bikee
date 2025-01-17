@@ -12,7 +12,7 @@ import java.util.Date;
 @ControllerAdvice()
 public class ExceptionGlobalHandler {
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> badCredentialHandler(Exception exception, WebRequest request) {
+    public ResponseEntity<ErrorResponse> badCredentialHandler(Exception exception, WebRequest request) {
         return new ResponseEntity<>(
 
                 new ErrorResponse(new Date(), exception.getMessage(), request.getDescription(false)

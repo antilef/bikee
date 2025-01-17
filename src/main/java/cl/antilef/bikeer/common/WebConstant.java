@@ -1,6 +1,10 @@
 package cl.antilef.bikeer.common;
 
 public class WebConstant {
-    public static String SUCCESS_TEXT = "SUCCESS";
-    public static String ERROR_TEXT = "ERROR";
+    public static final String SUCCESS_TEXT = "SUCCESS";
+    public static final String ERROR_TEXT = "ERROR";
+
+    private WebConstant(){
+        throw new IllegalStateException("WebConstant class");
+    }
 }

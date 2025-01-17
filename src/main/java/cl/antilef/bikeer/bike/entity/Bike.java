@@ -36,7 +36,7 @@ public class Bike {
 
     String size;
 
-    BikeType Type;
+    BikeType bikeType;
 
     @ManyToMany
     @JoinTable(name = "bike_rent",
@@ -64,7 +64,7 @@ public class Bike {
                 ", model='" + model + '\'' +
                 ", color='" + color + '\'' +
                 ", size='" + size + '\'' +
-                ", Type=" + Type +
+                ", Type=" + bikeType +
                 ", rents=" + getRentsIds() +
                 ", available=" + available +
                 '}';

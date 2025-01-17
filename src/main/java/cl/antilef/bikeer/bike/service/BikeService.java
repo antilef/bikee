@@ -47,7 +47,7 @@ public class BikeService {
         logger.info("Creating Bike...");
         Bike bike = Bike.builder()
                 .serial(createBikeRequest.serial())
-                .Type(createBikeRequest.Type())
+                .bikeType(createBikeRequest.Type())
                 .model(createBikeRequest.model())
                 .color(createBikeRequest.color())
                 .size(createBikeRequest.size())

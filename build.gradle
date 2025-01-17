@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'jacoco'
 	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
 	id "org.sonarqube" version "6.0.1.5171"
@@ -43,4 +44,27 @@ tasks.named('test') {
 	useJUnitPlatform()
 
 	jvmArgs "-XX:+EnableDynamicAgentLoading"
+}
+jacoco {
+	toolVersion = '0.8.10' // Replace with the latest version
+}
+
+tasks.jacocoTestReport {
+	dependsOn test // Ensure tests run before generating the report
+	reports {
+		xml.required = true    // Enable XML report (useful for CI tools like SonarQube)
+		csv.required = false   // Disable CSV report if not needed
+		html.required = true   // Enable HTML report for local inspection
+	}
+}
+sonarqube {
+	properties {
+		property "sonar.projectKey", "bikker"
+		property "sonar.host.url", "http://localhost:9000" // URL of your SonarQube server
+		property "sonar.login", "sqp_d2854e8c0e6a44edec932f8c9f1e57924e678ce2" // Authentication token
+		property "sonar.sources", "src/main/java" // Path to source files
+		property "sonar.tests", "src/test/java" // Path to test files
+		property "sonar.java.binaries", "build/classes" // Path to compiled classes
+		property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+	}
 }
