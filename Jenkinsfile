@@ -10,7 +10,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'gradle build'
+                sh 'gradle clean build --no-daemon'
+            }
+        }
+
+        stage('test') {
+            steps {
+                sh 'gradle test --no-daemon'
             }
         }
     }
