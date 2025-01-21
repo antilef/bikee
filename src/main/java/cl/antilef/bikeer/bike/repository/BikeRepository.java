@@ -10,4 +10,6 @@ import java.util.List;
 public interface BikeRepository extends CrudRepository<Bike,Integer> {
     @Query("SELECT b FROM Bike b JOIN b.rents r WHERE r.id = :rentId")
     List<Bike> findAllByRent(@Param("rentId") Integer rentId);
+
+    List<Bike> findByAvailable(boolean available);
 }

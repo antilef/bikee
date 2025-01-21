@@ -1,6 +1,7 @@
 package cl.antilef.bikeer.bike.controller;
 
 import cl.antilef.bikeer.bike.dto.CreateBikeRequest;
+import cl.antilef.bikeer.bike.dto.GetAvailableBikes;
 import cl.antilef.bikeer.bike.dto.GetBikeResponse;
 import cl.antilef.bikeer.bike.entity.Bike;
 import cl.antilef.bikeer.bike.exception.BikeNotFoundException;
@@ -10,6 +11,8 @@ import cl.antilef.bikeer.common.WebConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -43,5 +46,12 @@ public class BikeController {
         return ResponseEntity.ok(bike);
     }
 
+
+    @GetMapping("/availables")
+    public ResponseEntity<GetAvailableBikes> getAvailableBikes(){
+        List<Bike> bikes = bikeService.getAllBikesAvailables();
+        GetAvailableBikes response = new GetAvailableBikes(bikes,bikes.size());
+        return ResponseEntity.ok(response);
+    }
 
 }

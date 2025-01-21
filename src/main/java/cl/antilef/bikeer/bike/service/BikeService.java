@@ -57,4 +57,10 @@ public class BikeService {
                 .build();
         return bikeRepository.save(bike);
     }
+
+    public List<Bike> getAllBikesAvailables() {
+        logger.info("Searching all bikes that are available...");
+        System.out.println("Sascrhcj");
+        return bikeRepository.findByAvailable(true);
+    }
 }

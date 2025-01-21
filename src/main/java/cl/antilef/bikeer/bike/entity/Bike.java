@@ -5,11 +5,8 @@ import cl.antilef.bikeer.rent.entity.Rent;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import jakarta.persistence.Id;
-import lombok.ToString;
 
 
 import java.util.List;
@@ -20,6 +17,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "bikes")
+@NoArgsConstructor
 public class Bike {
 
     @Id()
