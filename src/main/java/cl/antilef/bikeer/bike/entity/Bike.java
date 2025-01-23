@@ -47,6 +47,7 @@ public class Bike {
 
     Integer actualRentId;
 
+    @JsonIgnore
     public List<Integer> getRentsIds(){
         return this.rents.stream().map(Rent::getId).toList();
     }
